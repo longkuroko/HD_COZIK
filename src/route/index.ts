@@ -3,6 +3,7 @@ import { accountController } from "../controller/account";
 import { patientController } from "../controller/patient";
 import { staffController } from "../controller/staff";
 import { userController } from "../controller/user";
+import auth from "../middleware/auth.middleware";
 
 
 
@@ -16,28 +17,30 @@ const initialRouter = (app: Application) => {
     //account
     router.post('/register', accountController.register);
     router.post('/login', accountController.login);
+    router.get('/accounts',accountController.getAccounts);
+    router.get('/me', auth, accountController.me);
 
     //user
-    router.get('/users', userController.getUsers);
+    router.get('/users',auth ,userController.getUsers);
     router.post('/user', userController.createUser);
-    router.put('/user/:id', userController.updateUser);
+    router.put('/user/:id', auth,userController.updateUser);
 
     //staff
-    router.get('/staffs', staffController.getStaffs);
-    router.post('/staff', staffController.createStaff);
-    router.put('/staff/:id', staffController.updateStaff);
+    router.get('/staffs', auth, staffController.getStaffs);
+    router.post('/staff',auth,  staffController.createStaff);
+    router.put('/staff/:id',auth, staffController.updateStaff);
 
     //patient
-    router.get('/patients', patientController.getPatients);
-    router.post('/patient', patientController.createPatient);
-    router.put('/patient/:id', patientController.updatePatient);
+    router.get('/patients', auth,patientController.getPatients);
+    router.post('/patient', auth,patientController.createPatient);
+    router.put('/patient/:id', auth,patientController.updatePatient);
 
 
 
 
     router.get('/app');
 
-    return app.use("/api/v1", router);
+    return app.use("/", router);
 
 
 }

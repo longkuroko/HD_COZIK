@@ -9,8 +9,6 @@ const register = async (
     res: Response
 ) => {
     try{
-
- 
         const userData = req.body;
     
         const existEmail = await getRepository(Account)

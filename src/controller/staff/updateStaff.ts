@@ -5,7 +5,9 @@ import { Users } from "../../entity/user.entity";
 
 
 export const updateStaff = async (req: Request, res: Response) => {
-    try{ 
+    try{
+        
+        
         const id = req.params.id; 
         const data = req.body;
 
