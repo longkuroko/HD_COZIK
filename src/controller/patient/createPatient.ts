@@ -19,8 +19,8 @@ export const createPatient = async (req: any, res: Response) => {
                 user_id: data.user_id,
                 staff_id: data.staff_id,
                 description: data.description,
-                createdAt : new Date(),
-                updateAt: new Date(),
+                createdat : new Date(),
+                updatedat: new Date(),
             })
             .execute();
 

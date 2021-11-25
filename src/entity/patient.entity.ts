@@ -15,10 +15,10 @@ export class Patient extends BaseEntity{
     staff_id!:number;
 
     @Column()
-    createdAt!: Date;
+    createdat!: Date;
 
     @Column()
-    updateAt!: Date;
+    updatedat!: Date;
 
     @Column()
     description!:string;

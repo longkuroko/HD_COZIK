@@ -27,7 +27,8 @@ const register = async (
             .values({
                 username: userData.username,
                 password: await hashPassword(userData.password),
-                role_id: userData.role_id
+                role_id: userData.role_id,
+                staff_id: userData.staff_id,
             })
             .returning("id")
             .execute();

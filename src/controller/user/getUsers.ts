@@ -29,7 +29,29 @@ export const getUsers =  async (req: any, res: Response) => {
                     .getManyAndCount();
             return res.status(200).json({ total, data });
             }
+        }else if(findId.role_id === 2){
+            if(page_size == ""){
+                const [data, total] = await getRepository(Users)
+                    .createQueryBuilder("ca")
+                    .leftJoinAndSelect("ca.patient",'pt')
+                    .leftJoinAndSelect('pt.staff', 'staff')
+                    .where('pt.staff_id =:id', {id: findId.staff_id})
+                    .getManyAndCount();
+                return res.status(200).json({ total, data });
+            }else{
+                const [data, total] = await getRepository(Account)
+                    .createQueryBuilder("ca")
+                    .leftJoinAndSelect("ca.patient",'pt')
+                    .leftJoinAndSelect('pt.staff', 'staff')
+                    .where('pt.staff_id =:id', {id: findId.staff_id})
+                    .take(page_size)
+                    .skip((page - 1) * page_size)
+                    .getManyAndCount();
+                return res.status(200).json({ total, data });
+                }
         }
+
+
     }
     catch(err){
         console.log(err);

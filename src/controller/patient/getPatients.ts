@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
+import { Account } from "../../entity/account.entity";
 import { Patient } from "../../entity/patient.entity";
 import { checkRole } from "../../middleware/role.middleware";
 
@@ -12,9 +13,11 @@ export const getPatients =  async (req: any, res: Response) => {
         
         const page = +req?.query?.page || 1;
         const page_size = +req?.query?.page_size || "";
-        const check = await checkRole(req, res);
+        // const check = await checkRole(req, res);
+        const check = await getRepository(Account).findOne({id: userId});
 
-        if(check === 1){
+
+        if(check.role_id === 1){
             
             if(page_size == ""){
                 const [data, total] = await getRepository(Patient)
@@ -29,17 +32,17 @@ export const getPatients =  async (req: any, res: Response) => {
                     .getManyAndCount();
                 return res.status(200).json({ total, data });
                 }
-        }else if(check === 2){
+        }else if(check.role_id   === 2){
             if(page_size == ""){
                 const [data, total] = await getRepository(Patient)
                     .createQueryBuilder("ca")
-                    .where('ca.staff_id =:id', {id: userId})
+                    .where('ca.staff_id =:id', {id: check.staff_id})
                     .getManyAndCount();
                 return res.status(200).json({ total, data });
             }else{
                 const [data, total] = await getRepository(Patient)
                     .createQueryBuilder("ca")
-                    .where('ca.staff_id =:id', {id: userId})
+                    .where('ca.staff_id =:id', {id: check.staff_id})
                     .take(page_size)
                     .skip((page - 1) * page_size)
                     .getManyAndCount();
